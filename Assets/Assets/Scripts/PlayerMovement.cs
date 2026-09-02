@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private float _speed = 5f;
+    [SerializeField] private Animator _animator;
 
     private float _moveInput;
     private bool _isFacingRight = true;
@@ -24,7 +26,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rigidbody2D.linearVelocity = new Vector2 (_moveInput * _speed, _rigidbody2D.linearVelocity.y);
+        _rigidbody2D.linearVelocity = new Vector2(_moveInput * _speed, _rigidbody2D.linearVelocity.y);
+        _animator.SetFloat("speed", Mathf.Abs(_rigidbody2D.linearVelocity.x));
+
     }
 
     private void Flip()

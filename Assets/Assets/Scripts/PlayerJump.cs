@@ -7,6 +7,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jumpForce = 12f;
     [SerializeField] private float _checkRadius = 0.2f;
+    [SerializeField] private Animator _animator;
 
     private Rigidbody2D _rigidbody;
     private bool _isGround;
@@ -15,7 +16,7 @@ public class PlayerJump : MonoBehaviour
     {
        _rigidbody = GetComponent<Rigidbody2D>();
 
-        if( _rigidbody != null)
+        if( _rigidbody == null)
         {
             Debug.Log("Null RB");
         }
@@ -24,10 +25,12 @@ public class PlayerJump : MonoBehaviour
     private void Update()
     {
         _isGround = Physics2D.OverlapCircle(_feetPositon.position, _checkRadius, _groundLayer);
+        _animator.SetBool("isGrounded", _isGround);
+        _animator.SetFloat("VerticalVelocity", _rigidbody.linearVelocity.y);
 
-        if(Keyboard.current.spaceKey.wasPressedThisFrame && _isGround)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && _isGround)
         {
-            ApplyJump();
+            ApplyJump();           
         }
     }
 
