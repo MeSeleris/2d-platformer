@@ -13,8 +13,6 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private KnockbackAfterDamage _knockback;
 
-    private float _moveInput;
-
     private void Awake()
     {
         if (_rigidbody2D == null)
@@ -34,11 +32,11 @@ public class PlayerMover : MonoBehaviour
     {
         float moveInput = _inputReader.MoveDirection;
 
-        if (_moveInput > 0f)
+        if (moveInput > 0f)
         {
             _rotator2D.FaceRight();
         }
-        else if (_moveInput < 0f)
+        else if (moveInput < 0f)
         {
             _rotator2D.FaceLeft();
         }
@@ -51,7 +49,7 @@ public class PlayerMover : MonoBehaviour
 
         float moveInput = _inputReader.MoveDirection;
 
-        _rigidbody2D.linearVelocity = new Vector2(_moveInput * _speed, _rigidbody2D.linearVelocity.y);
+        _rigidbody2D.linearVelocity = new Vector2(moveInput * _speed, _rigidbody2D.linearVelocity.y);
 
         if (_animator != null)
             _animator.SetFloat("speed", Mathf.Abs(_rigidbody2D.linearVelocity.x));
