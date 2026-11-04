@@ -9,7 +9,12 @@ public class EnemyDamage : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<PlayerHealth>(out var playerHealth))
         {
-            playerHealth.HealthLoss(_enemyDamage, transform.position);
+            playerHealth.TakeDamage(_enemyDamage);
+        }
+
+        if (collision.gameObject.TryGetComponent<KnockbackAfterDamage>(out var knockback))
+        {
+            knockback.PlayerKnocked(transform.position);
         }
     }
 }

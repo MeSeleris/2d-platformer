@@ -18,12 +18,9 @@ public class KnockbackAfterDamage : MonoBehaviour
     }
 
     public void PlayerKnocked (Vector2 attackedPosition)
-    {
-        Debug.Log("Вызван PlayKnockback! Направление от: " + attackedPosition);
-
+    {     
         if (isKnockedBack)
         {
-            Debug.Log("Отскок уже активен, выход.");
             return;
         }
 
