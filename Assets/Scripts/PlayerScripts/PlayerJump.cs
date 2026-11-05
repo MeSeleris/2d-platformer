@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerJump : MonoBehaviour
 {
-    [SerializeField] private Transform _feetPositon;
-    [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jumpForce = 12f;
-    [SerializeField] private float _checkRadius = 0.2f;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private PlayerAnimator _playerAnimator;
+    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private GroundDetector _groundDetector;
 
-    private Rigidbody2D _rigidbody;
     private bool _isGround;
 
     private void Awake()
@@ -24,9 +24,12 @@ public class PlayerJump : MonoBehaviour
 
     private void Update()
     {
-        _isGround = Physics2D.OverlapCircle(_feetPositon.position, _checkRadius, _groundLayer);
-        _animator.SetBool("isGrounded", _isGround);
-        _animator.SetFloat("VerticalVelocity", _rigidbody.linearVelocity.y);
+        bool isGrounded = _groundDetector != null && _groundDetector.IsGrounded;
+
+        if(_playerAnimator != null)
+        {
+            _playerAnimator.SetGrounded(isGrounded);
+        }
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame && _isGround)
         {
@@ -42,13 +45,5 @@ public class PlayerJump : MonoBehaviour
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, resetVerticalVelocity);
         _rigidbody.AddForce(jumpDirection * _jumpForce, ForceMode2D.Impulse);
     }
-    
-    private void OnDrawGizmos()
-    {
-        if(_feetPositon != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_feetPositon.position, _checkRadius);
-        }
-    }
+
 }
