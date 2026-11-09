@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerInputReader : MonoBehaviour
 {
     public float MoveDirection { get; private set; }
 
+    public event Action JumpTrigger;
+
     private void Update()
     {
         MoveDirection = ReadMovementInput();
+        ReadJump();
     }
 
     private float ReadMovementInput()
@@ -19,5 +23,13 @@ public class PlayerInputReader : MonoBehaviour
         float right = (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) ? 1f : 0f;
 
         return left + right;
+    }
+
+    private void ReadJump()
+    {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            JumpTrigger?.Invoke();
+        }
     }
 }

@@ -6,15 +6,13 @@ public class GroundDetector : MonoBehaviour
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _checkRadius = 0.2f;
 
-    private bool _isGrounded;
-
-    public bool IsGrounded => _isGrounded;
+    public bool IsGrounded { get; private set; }
 
     private void FixedUpdate()
     {
         if(_feetPosition != null)
         {
-            _isGrounded = Physics2D.OverlapCircle(_feetPosition.position, _checkRadius);
+            IsGrounded = Physics2D.OverlapCircle(_feetPosition.position, _checkRadius, _layerMask);
         }
     }
 
@@ -22,7 +20,7 @@ public class GroundDetector : MonoBehaviour
     {
         if (_feetPosition != null)
         {
-            Gizmos.color = _isGrounded ? Color.green : Color.yellow;
+            Gizmos.color = IsGrounded ? Color.green : Color.yellow;
             Gizmos.DrawWireSphere(_feetPosition.position, _checkRadius);
         }
     }

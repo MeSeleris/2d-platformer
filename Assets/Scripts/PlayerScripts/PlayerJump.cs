@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerJump : MonoBehaviour
 {
@@ -9,31 +7,50 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private PlayerAnimator _playerAnimator;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private PlayerInputReader _playerInput;
 
     private bool _isGround;
 
     private void Awake()
     {
-       _rigidbody = GetComponent<Rigidbody2D>();
-
         if( _rigidbody == null)
-        {
-            Debug.Log("Null RB");
-        }
+            _rigidbody = GetComponent<Rigidbody2D>();
+
+        if( _playerInput == null )
+            _playerInput = GetComponent<PlayerInputReader>(); 
+
+        if(_groundDetector == null)
+            _groundDetector = GetComponent<GroundDetector>();
+
+        if(_playerAnimator == null )
+            _playerAnimator = GetComponent<PlayerAnimator>();
+    }
+
+    private void OnEnable()
+    {
+        if (_playerInput != null)
+            _playerInput.JumpTrigger += OnJump;
+    }
+
+    private void OnDisable()
+    {
+        if (_playerInput != null)
+            _playerInput.JumpTrigger -= OnJump;
     }
 
     private void Update()
     {
-        bool isGrounded = _groundDetector != null && _groundDetector.IsGrounded;
-
-        if(_playerAnimator != null)
+        if(_playerAnimator != null && _groundDetector != null)
         {
-            _playerAnimator.SetGrounded(isGrounded);
+            _playerAnimator.SetGrounded(_groundDetector.IsGrounded);
         }
+    }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && _isGround)
+    private void OnJump()
+    {
+        if (_groundDetector != null && _groundDetector.IsGrounded)
         {
-            ApplyJump();           
+            ApplyJump();
         }
     }
 

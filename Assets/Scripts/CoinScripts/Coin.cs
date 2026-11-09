@@ -11,23 +11,17 @@ public class Coin : MonoBehaviour, ICollectable
 
     public int Value => _coinValue;
 
-    public void Collect(PlayerTriggerHandler collector)
+    public void Collect()
     {
-        if(collector.CoinWallet != null)
-        {
-            collector.CoinWallet.AddCoin(_coinValue);
-        }
+        PickUpSoundPlay();
+        OnCollect?.Invoke(this);
+    }    
 
-        if(_coinPickUpSound != null)
+    private void PickUpSoundPlay()
+    {
+        if (_coinPickUpSound != null)
         {
             AudioSource.PlayClipAtPoint(_coinPickUpSound, transform.position);
         }
-
-        if(TryGetComponent<Collider2D>(out var collider))
-        {
-            collider.enabled = false;
-        }
-
-        OnCollect?.Invoke(this);
-    }    
+    }
 }

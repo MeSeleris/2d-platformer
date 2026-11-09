@@ -15,18 +15,19 @@ public class HealthView : MonoBehaviour
     private void OnEnable()
     {
         if(_playerHealth != null)
-           _playerHealth.OnHealthChange += UpdateHearts;
+           _playerHealth.ChangeHealth += UpdateHearts;
     }
 
     private void OnDisable()
     {
         if( _playerHealth != null )
-            _playerHealth.OnHealthChange -= UpdateHearts;
+            _playerHealth.ChangeHealth -= UpdateHearts;
     }
 
     private void UpdateHearts(int currentHealth, int maxHealth)
     {
         Debug.Log($"[HealthView] Получено событие! HP: {currentHealth}/{maxHealth}");
+
         for (int i = 0; i < _heartRenderers.Length;  i++)
         {
             if (_heartRenderers[i] == null)
@@ -38,7 +39,6 @@ public class HealthView : MonoBehaviour
             {
                 _heartRenderers[i].sprite = (i<currentHealth) ? _fullHeartSprite : _emptyHeartSprite;
             }
-
             else
             {
                 _heartRenderers[i].enabled = isFull;

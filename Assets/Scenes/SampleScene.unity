@@ -342,7 +342,7 @@ Transform:
   m_GameObject: {fileID: 197755605}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.14999962, y: -1.91, z: 0}
+  m_LocalPosition: {x: 0.04, y: -1.869, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -639,7 +639,6 @@ GameObject:
   - component: {fileID: 360886514}
   - component: {fileID: 360886513}
   - component: {fileID: 360886518}
-  - component: {fileID: 360886517}
   - component: {fileID: 360886519}
   m_Layer: 0
   m_Name: EnemySlimePink_0
@@ -834,24 +833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98401e9b4a9f21b46b6548b21251d969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamage
---- !u!114 &360886517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360886509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 430f03a511dd5434dab614281514de03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GroundObstacleDetector2D
-  _groundCheckPoint: {fileID: 1909898874}
-  _groundRayDistance: 0.5
-  _wallRayDistance: 0.3
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &360886518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1545,6 +1526,9 @@ GameObject:
   - component: {fileID: 602439202}
   - component: {fileID: 602439204}
   - component: {fileID: 602439203}
+  - component: {fileID: 602439205}
+  - component: {fileID: 602439206}
+  - component: {fileID: 602439207}
   m_Layer: 0
   m_Name: CharacterSheet_7
   m_TagString: Player
@@ -1729,7 +1713,7 @@ MonoBehaviour:
   _rotator2D: {fileID: 602439203}
   _inputReader: {fileID: 602439204}
   _speed: 5
-  _animator: {fileID: 602439194}
+  _playerAnimation: {fileID: 602439205}
   _knockback: {fileID: 602439200}
 --- !u!114 &602439198
 MonoBehaviour:
@@ -1743,13 +1727,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81226905c53e518478bb789bc8baf480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJump
-  _feetPositon: {fileID: 197755606}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _jumpForce: 25
-  _checkRadius: 0.2
-  _animator: {fileID: 602439194}
+  _jumpForce: 25.1
+  _playerAnimator: {fileID: 602439205}
+  _rigidbody: {fileID: 602439192}
+  _groundDetector: {fileID: 602439206}
+  _playerInput: {fileID: 602439204}
 --- !u!114 &602439199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1803,7 +1785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49d14804bb27294295ca1cf1882d539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerHandler
-  _coinCollector: {fileID: 602439201}
 --- !u!114 &602439203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1829,6 +1810,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 958e90fa8a81b8546b218106b6873e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
+--- !u!114 &602439205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602439191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32fe519d3bf64e49afe2031cec14c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+--- !u!114 &602439206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602439191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3c5ea610b491a49b38adfc837b82df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GroundDetector
+  _feetPosition: {fileID: 197755606}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  _checkRadius: 0.2
+--- !u!114 &602439207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602439191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec2465f4a7b433419788799cbffcfdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  _triggerHandler: {fileID: 602439202}
+  _wallet: {fileID: 602439201}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -11098,7 +11122,7 @@ Transform:
   m_GameObject: {fileID: 1909898873}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.55, y: -1.62, z: 0}
+  m_LocalPosition: {x: 5.7, y: -1.62, z: 0}
   m_LocalScale: {x: 9.518328, y: 10.423393, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

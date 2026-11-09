@@ -3,32 +3,30 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField]private int _maxHealth = 3;
-
-    private int _currentHealth;
+    [SerializeField] private int _maxHealth = 3;
     
-    public int CurrentHealth => _currentHealth;
+    public int CurrentHealth { get; private set; }
     public int MaxHealth => _maxHealth;
     
 
-    public Action<int, int> OnHealthChange;
+    public Action<int, int> ChangeHealth;
 
     private void Awake()
     {
-        _currentHealth = _maxHealth;
+        CurrentHealth = _maxHealth;
     }
 
     private void Start()
     {
-        OnHealthChange?.Invoke(_currentHealth, _maxHealth);
+        ChangeHealth?.Invoke(CurrentHealth, _maxHealth);
     }
 
     public void TakeDamage(int enemyDamage)
     {
-        if(enemyDamage <= 0 || _currentHealth < 0)
+        if(enemyDamage <= 0 || CurrentHealth < 0)
             return;
 
-        _currentHealth = Mathf.Max(0, _currentHealth - enemyDamage);
-        OnHealthChange?.Invoke(_currentHealth, _maxHealth);
+        CurrentHealth = Mathf.Max(0, CurrentHealth - enemyDamage);
+        ChangeHealth?.Invoke(CurrentHealth, _maxHealth);
     }
 }

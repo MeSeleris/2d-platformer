@@ -4,32 +4,34 @@ public class Rotator2D : MonoBehaviour
 {
     [SerializeField] private bool _isFacingRight = true;
 
-    public bool isFacingRight => _isFacingRight;
+    private readonly Quaternion _faceRight = Quaternion.identity;
+    private readonly Quaternion _faceLeft = Quaternion.Euler(0f, 180f, 0f);
+
+    public bool IsFacingRight => _isFacingRight;
 
     public void FaceRight()
     {
         if (_isFacingRight)
             return;
-        SetFacing(true);
+
+        _isFacingRight = true;
+        transform.rotation = _faceRight;
     }
 
     public void FaceLeft()
     {
-        if(!_isFacingRight)
+        if (!_isFacingRight)
             return;
-        SetFacing(false);
+
+        _isFacingRight = false;
+        transform.rotation = _faceLeft;
     }
 
     public void Flip()
     {
-        SetFacing(!_isFacingRight);
-    }
-
-    private void SetFacing(bool faceRight)
-    {
-       _isFacingRight = faceRight;
-
-        float yAngle = _isFacingRight ? 0f : 180f;
-        transform.rotation = Quaternion.Euler(0f, yAngle, 0f);
+        if (_isFacingRight)
+            FaceLeft();
+        else
+            FaceRight();
     }
 }
